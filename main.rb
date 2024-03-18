@@ -1,8 +1,8 @@
 class Node
     attr_accessor :value, :next_node
 
-    def initialize
-        @value = nil
+    def initialize(value)
+        @value = value
         @next_node = nil
     end
 end
@@ -45,7 +45,7 @@ class LinkedList
         current = @head
         while current != nil
             count += 1
-            current = current.current.next_node
+            current = current.next_node
         end
         count
     end
@@ -104,7 +104,8 @@ class LinkedList
 
     def find(value)
         #returns the index of the node containing value, or nil if not found
-        current = @headidx = 0
+        current = @head
+        idx = 0
         while current != nil
             return idx if current.value == value
             current = current.next_node
@@ -117,37 +118,44 @@ class LinkedList
         #represent your LinkedList objects as strings, so you can print them out and preview them in the console. The format should be: ( value ) -> ( value ) -> ( value ) -> nil
         current = @head
         while current != nil
-            print "#{current.data} -> "
+            print "#{current.value} -> "
             current = current.next_node
         end
         print "nil\n"
     end
 
-    def insert_at(value, index)
-        #inserts a new node with the provided value at the given index
-        if index == 0 
-            prepend(value)
-        else
-            prev_node = at(index - 1)
+    
+    # def insert_at(value, index)
+    #     #inserts a new node with the provided value at the given index
+    #     if index == 0 
+    #         prepend(value)
+    #     else
+    #         prev_node = at(index - 1)
 
-            return nil if prev_node.nil? #Index out of bounds
-            new_node = Node.new(value)
-            new_node.next_node = prev_node.next_node
-            prev_node.next_node = new_node
-        end
-    end
+    #         return nil if prev_node.nil? #Index out of bounds
+    #         new_node = Node.new(value)
+    #         new_node.next_node = prev_node.next_node
+    #         prev_node.next_node = new_node
+    #     end
+    # end
 
-    def remove_at(index)
-        #removes the node at the given index
-        return nil if @head.nil? || index < 0
-        if index == 0
-            @head = @head.next_node
-        else
-            prev_node = at(index - 1)
-            return nil if prev_node.nil? || prev_node.next_node.nil?
-            prev_node.next_node = prev_node.next_node.next_node
-        end
-    end
+    # def remove_at(index)
+    #     #removes the node at the given index
+    #     return nil if @head.nil? || index < 0
+    #     removed_value = nil
+    #     if index == 0
+    #         removed_value = @head.value
+    #         @head = @head.next_node
+    #     else
+    #         prev_node = at(index - 1)
+    #         return nil if prev_node.nil? || prev_node.next_node.nil?
+
+    #         removed_value = prev_node.next_node.value
+    #         prev_node.next_node = prev_node.next_node.next_node
+    #     end
+    #     @size -= 1
+    #     return removed_value
+    # end
 
 
 end
@@ -158,18 +166,18 @@ mList.append(1)
 mList.append_multiple([3,4,5]) 
 mList.append(8)
 mList.prepend(2)
-mList.insert_at(2,9)
-mList.remove_at(1)
+# mList.insert_at(2,9)
+# mList.remove_at(1)
 
-puts "List: #{mlist}"
-puts "Head: #{mlist.head.data}"
-puts "Tail: #{mlist.tail.data}"
-puts "Size of list: #{mListlist.size}"
-puts "Element at index 2: #{mlist.at(2)}"
-puts "Element at index 3: #{mListlist.at(3)}"
+puts "List: #{mList}"
+puts "Head: #{mList.head.value}"
+puts "Tail: #{mList.tail.value}"
+puts "Size of list: #{mList.size}"
+puts "Element at index 2: #{mList.at(2)}"
+puts "Element at index 3: #{mList.at(3)}"
 puts "Popped element: #{mList.pop}"
 puts "List after popping: #{mList}"
-puts "Does list contain 7? #{mlist.contains?(7)}"
-puts "Does list contain 8? #{mlist.contains?(8)}"
-puts "Index of value 5: #{mlist.find(5)}"
-puts "Index of value 12: #{mlist.find(12)}"
+puts "Does list contain 7? #{mList.contains?(7)}"
+puts "Does list contain 3? #{mList.contains?(3)}"
+puts "Index of value 5: #{mList.find(5)}"
+puts "Index of value 12: #{mList.find(12)}"
