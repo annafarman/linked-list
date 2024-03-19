@@ -35,8 +35,8 @@ class LinkedList
     def prepend(value)
         #adds a new node containing value to the start of the list
         new_node = Node.new(value)
-        new_node.next_node = @head
-        @head = new_node
+        new_node.next_node = @head      #the @head is NOT in the 0 position anymore, but still carrying the @head label
+        @head = new_node                #move @head LABEL to the new node
     end
 
     def size
@@ -68,7 +68,7 @@ class LinkedList
         current = @head
         idx = 0
         while current != nil
-            return current.value if idx == index
+            return current if idx == index
             current = current.next_node
             idx += 1
         end
@@ -115,7 +115,7 @@ class LinkedList
     end
 
     def to_s
-        #represent your LinkedList objects as strings, so you can print them out and preview them in the console. The format should be: ( value ) -> ( value ) -> ( value ) -> nil
+        #represent your LinkedList objects as strings, so you can print them out and preview them in the console. The format should be: (value) -> (value) -> (value) -> nil
         current = @head
         while current != nil
             print "#{current.value} -> "
@@ -125,37 +125,41 @@ class LinkedList
     end
 
     
-    # def insert_at(value, index)
-    #     #inserts a new node with the provided value at the given index
-    #     if index == 0 
-    #         prepend(value)
-    #     else
-    #         prev_node = at(index - 1)
+    def insert_at(index, value)
+        #inserts a new node with the provided value at the given index
+        if index == 0 
+            prepend(value)
+            return
+        end
 
-    #         return nil if prev_node.nil? #Index out of bounds
-    #         new_node = Node.new(value)
-    #         new_node.next_node = prev_node.next_node
-    #         prev_node.next_node = new_node
-    #     end
-    # end
+        prev_node = at(index-1)
+        current_node = at(index)
 
-    # def remove_at(index)
-    #     #removes the node at the given index
-    #     return nil if @head.nil? || index < 0
-    #     removed_value = nil
-    #     if index == 0
-    #         removed_value = @head.value
-    #         @head = @head.next_node
-    #     else
-    #         prev_node = at(index - 1)
-    #         return nil if prev_node.nil? || prev_node.next_node.nil?
+        if prev_node.nil? || current_node.nil? #Index out of bounds
+            return nil 
+        end
 
-    #         removed_value = prev_node.next_node.value
-    #         prev_node.next_node = prev_node.next_node.next_node
-    #     end
-    #     @size -= 1
-    #     return removed_value
-    # end
+        new_node = Node.new(value)
+        prev_node.next_node = new_node
+        new_node.next_node = current_node
+    end
+
+    def remove_at(index)
+        #removes the node at the given index
+        return nil if @head.nil? || index < 0 || !at(index)
+        removed_value = nil
+        if index == 0
+            removed_value = @head.value
+            @head = @head.next_node 
+        else
+            prev_node = at(index - 1)
+            return nil if prev_node.nil?
+
+            removed_value = prev_node.next_node.value
+            prev_node.next_node = prev_node.next_node.next_node
+        end
+        return removed_value
+    end
 
 
 end
@@ -166,15 +170,30 @@ mList.append(1)
 mList.append_multiple([3,4,5]) 
 mList.append(8)
 mList.prepend(2)
-# mList.insert_at(2,9)
-# mList.remove_at(1)
+mList.insert_at(2,9)
+
 
 puts "List: #{mList}"
 puts "Head: #{mList.head.value}"
 puts "Tail: #{mList.tail.value}"
 puts "Size of list: #{mList.size}"
-puts "Element at index 2: #{mList.at(2)}"
-puts "Element at index 3: #{mList.at(3)}"
+puts "Element at index 2: #{mList.at(2).value}"
+puts "Element at index 3: #{mList.at(3).value}"
+puts "Popped element: #{mList.pop}"
+puts "List after popping: #{mList}"
+puts "Does list contain 7? #{mList.contains?(7)}"
+puts "Does list contain 3? #{mList.contains?(3)}"
+puts "Index of value 5: #{mList.find(5)}"
+puts "Index of value 12: #{mList.find(12)}"
+
+puts "==============================================="
+mList.remove_at(1)
+puts "List: #{mList}"
+puts "Head: #{mList.head.value}"
+puts "Tail: #{mList.tail.value}"
+puts "Size of list: #{mList.size}"
+puts "Element at index 2: #{mList.at(2).value}"
+puts "Element at index 3: #{mList.at(3).value}"
 puts "Popped element: #{mList.pop}"
 puts "List after popping: #{mList}"
 puts "Does list contain 7? #{mList.contains?(7)}"
